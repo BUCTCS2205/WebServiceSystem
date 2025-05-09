@@ -1,10 +1,21 @@
 <template>
   <div class="root">
-    <!-- 内容表格区 -->
+    <!-- 主体 -->
   <FaPageMain>
-    <FaButton class="btn" @click="add">添加文物</FaButton>
-    <el-table :data="tableData" border style="width: 100%; margin-bottom: 30px">
+    <!-- 顶部功能区 -->
+    <div class="func">
+      <FaButton class="btn1" @click="add">添加文物</FaButton>
+      <div class="search">
+        <el-input class="myInput" v-model="searchForm.name" placeholder="请输入标题" />
+        <el-input class="myInput" v-model="searchForm.years" placeholder="请输入年份" />
+        <el-input class="myInput" v-model="searchForm.type" placeholder="请输入材质" />
+        <FaButton class="btn2" @click="handleSerch">条件查询</FaButton>
+      </div>
+    </div>
+    <!-- 内容表格区 -->
+    <el-table :data="showData" border style="width: 100%; margin-bottom: 30px">
       <el-table-column prop="name" label="名称" width="100" />
+      <el-table-column prop="years" label="年份" width="100"></el-table-column>
       <el-table-column prop="image" label="图片" width="150" >
         <template #default="scope">
           <el-image :src="scope.row.url" style="width: 100px;
@@ -129,8 +140,20 @@ import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
 import router from '@/router';
-let currentPage=ref(3);//当前页数
+import useCulturalRelicsStore from '@/store/modules/culturalRelics';
+const culturalRelicsStore=useCulturalRelicsStore();//从文物仓库中取出数据
+let showData=ref<any>([]);//正真展示的数据
+//总数据量
+let total=ref(culturalRelicsStore.allData.length);
+let currentPage=ref(1);//当前页数
 let pageSize=ref(3);//表格大小
+onMounted(()=>{
+  let start=(currentPage.value-1)*pageSize.value
+  let end=start+pageSize.value>=total.value? total.value-1 : start+pageSize.value
+  for(let i=start;i<end;i++){
+    showData.value.push(culturalRelicsStore.allData[i]);
+  }
+})
 let showAddCard=ref(false)//添加卡片显示控制
 let addItem=reactive({
   name: '',
@@ -138,6 +161,19 @@ let addItem=reactive({
   type: '',
   describe: '',
 })
+//查询数据
+let searchForm=reactive({
+    name: '',
+    years: '',
+    type: '',
+})
+
+/**
+ * 数据查询按钮
+ */
+function handleSerch(){
+  // console.log(searchForm);
+}
 /**
  * 添加文物按钮回调
  */
@@ -174,6 +210,7 @@ function closeAddCard(){
 //表格项数发生变化事件
 function handleSizeChange(val:number){
   pageSize.value=val;
+
 }
 //当前页数发生变化事件
 function handleCurrentChange(val:number){
@@ -190,39 +227,7 @@ let typeArr=reactive([
     label: '铁器',
   }
 ])
-//待展示数据
-const tableData = reactive([
-  {
-    id: 1,
-    name: '壶',
-    url: 'https://ts1.tc.mm.bing.net/th/id/OIP-C.jDmpmCyqMqJjZGl4-sPTmQHaJM?w=157&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2',
-    type: '青铜器',
-    describe: '第一件',
-  },
-  {
-    id: 2,
-    name: '罐',
-    url: 'https://ts1.tc.mm.bing.net/th/id/OIP-C.TQwFNNfljYEUTjRBfKPzCwHaID?w=157&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2',
-    type: '青铜器',
-    describe: '第二件',
-  },
-  {
-    id: 3,
-    name: '钟',
-    url: 'https://ts1.tc.mm.bing.net/th/id/OIP-C.tBW8DNGo8NNNqcJuigdhGQHaJX?w=157&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2',
-    type: '青铜器',
-    describe: '第三件',
-  },
-  {
-    id: 4,
-    name: '炉',
-    url: 'https://ts1.tc.mm.bing.net/th/id/OIP-C.8cFO9qJDrJTpc-Mq0PZIOwHaIB?w=190&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2',
-    type: '青铜器',
-    describe: '第四件',
-  },
-])
-//总数据量
-let total=ref(400);
+
 //详情按钮
 function details(item:any){
   // console.log('item',item);
@@ -278,9 +283,27 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 </script>
 <style scoped>
 .root {
-  .btn{
+  .func{
     margin-bottom: 20px;
+    display: flex;
+    /* 新增文物 */
+    .btn1{
+      margin-right: 20px;
+    }
+    /* 条件查询 */
+    .search{
+      width: 800px;
+      padding-left: 20px;
+      border-left: 1px dashed gray;
+      display: flex;
+      justify-content: space-between;
+      .myInput{
+        width: 200px ;
+        height: 40px ;
+      }
+    }
   }
+
 
   /* 修改卡片 */
   .changeCard {

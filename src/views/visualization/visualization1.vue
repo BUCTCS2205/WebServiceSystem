@@ -18,11 +18,11 @@ let left_top=ref();
 let right_top=ref();
 let bottom_all=ref();
 let bar_optional={
-      title: { text: '藏品年份数量分布图',left: 'center' },
+      title: { text: '文物年份数量分布图',left: 'center' },
       tooltip: {},
       xAxis: {
         name: '年份',
-        data: ['唐', '宋', '元', '明', '清']
+        data: [0, 1000, 2000, 3000, 4000]
       },
       yAxis: {
         name: '藏品数量',

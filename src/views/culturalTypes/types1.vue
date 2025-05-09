@@ -36,7 +36,7 @@ function addType(){
 }
 //确认修改
 function confirm(){
-  console.log(typeName.value);
+  // console.log(typeName.value);
   typeName.value="";
   showChange.value=false;
 }
@@ -46,7 +46,7 @@ function cancel(){
   showChange.value=false;
 }
 function deleteType(id:any){
-  console.log(id);
+  // console.log(id);
   ElMessage({
     type: 'success',
     message: '删除成功',

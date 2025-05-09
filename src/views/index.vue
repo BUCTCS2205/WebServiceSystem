@@ -5,7 +5,13 @@ meta:
 </route>
 
 <script setup lang="ts">
+import useCulturalRelicsStore from '@/store/modules/culturalRelics';
 import router from '@/router';
+const culturalRelicsStore=useCulturalRelicsStore();
+let recommmds=ref<any>([]);
+for(let i=0;i<3;i++){
+  recommmds.value.push(culturalRelicsStore.allData[i]);
+}
 const versionType = ref('basic')
 watch(versionType, (val) => {
   if (val === 'pro') {
@@ -15,44 +21,6 @@ watch(versionType, (val) => {
 function open(url: string) {
   window.open(url, '_blank')
 }
-//推荐文物
-let recommend=reactive([
-{
-    id: 1,
-    name: '推荐一',
-    url: new URL('@/assets/images/02a.jpg', import.meta.url).href,
-    type: '????',
-    describe: '????',
-  },
-  {
-    id: 2,
-    name: '推荐二',
-    url: new URL('@/assets/images/OIP-C (1).jpg', import.meta.url).href,
-    type: '????',
-    describe: '????',
-  },
-  {
-    id: 3,
-    name: '推荐三',
-    url: new URL('@/assets/images/OIP-C (2).jpg', import.meta.url).href,
-    type: '????',
-    describe: '????',
-  },
-  {
-    id: 4,
-    name: '推荐四',
-    url: new URL('@/assets/images/OIP-C (3).jpg', import.meta.url).href,
-    type: '????',
-    describe: '????',
-  },
-  {
-    id: 5,
-    name: '推荐五',
-    url: new URL('@/assets/images/OIP-C.jpg', import.meta.url).href,
-    type: '????',
-    describe: '????',
-  }
-])
 //点击图片跳转详情页
 function gotoDetails(item:any){
   // console.log('跳转')
@@ -104,7 +72,7 @@ function gotoDetails(item:any){
     </FaPageHeader>
     <FaPageMain>
       <el-carousel :interval="2000" arrow="hover" height="450px">
-        <el-carousel-item v-for="item in recommend" :key="item.id" style="height: 500px;">
+        <el-carousel-item v-for="item in recommmds" :key="item.id" style="height: 500px;">
             <img :src="item.url" style="width: 100%; height: 100%;" @click="gotoDetails(item)">
         </el-carousel-item>
       </el-carousel>
