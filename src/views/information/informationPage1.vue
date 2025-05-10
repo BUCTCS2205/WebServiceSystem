@@ -72,14 +72,7 @@
         </el-upload>
       </el-form-item>
       <el-form-item label="类型">
-        <el-select size="large" style="width: 240px;" v-model="changeItem.type">
-          <el-option
-            v-for="item in typeArr"
-            :key="item.value"
-            :label="item.value"
-            :value="item.value"
-          />
-        </el-select>
+        <el-input v-model="changeItem.type"></el-input>
       </el-form-item>
       <el-form-item label="描述">
         <el-input v-model="changeItem.describe" type="textarea" :rows="2" style="width: 240px;"></el-input>
@@ -114,14 +107,7 @@
         </el-upload>
       </el-form-item>
       <el-form-item label="类型">
-        <el-select size="large" style="width: 240px;" v-model="addItem.type">
-          <el-option
-            v-for="item in typeArr"
-            :key="item.value"
-            :label="item.value"
-            :value="item.value"
-          />
-        </el-select>
+        <el-input v-model="addItem.type"></el-input>
       </el-form-item>
       <el-form-item label="描述">
         <el-input v-model="addItem.describe" type="textarea" :rows="2" style="width: 240px;"></el-input>
@@ -141,19 +127,28 @@ import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
 import router from '@/router';
 import useCulturalRelicsStore from '@/store/modules/culturalRelics';
-const culturalRelicsStore=useCulturalRelicsStore();//从文物仓库中取出数据
+const culturalRelicsStore=useCulturalRelicsStore();//从文物仓库中取出全部数据
+let tempArr:any[]=[]//条件查询临时数据
 let showData=ref<any>([]);//正真展示的数据
 //总数据量
 let total=ref(culturalRelicsStore.allData.length);
 let currentPage=ref(1);//当前页数
 let pageSize=ref(3);//表格大小
 onMounted(()=>{
-  let start=(currentPage.value-1)*pageSize.value
-  let end=start+pageSize.value>=total.value? total.value-1 : start+pageSize.value
-  for(let i=start;i<end;i++){
-    showData.value.push(culturalRelicsStore.allData[i]);
-  }
+  Pagination(culturalRelicsStore.allData);
 })
+/**
+ * 将数据分页
+ */
+function Pagination(arr:any[]){
+  showData.value=[];
+  total.value=arr.length
+  let start=(currentPage.value-1)*pageSize.value
+  let end=start+pageSize.value>=arr.length? arr.length : start+pageSize.value
+  for(let i=start;i<end;i++){
+    showData.value.push(arr[i]);
+  }
+}
 let showAddCard=ref(false)//添加卡片显示控制
 let addItem=reactive({
   name: '',
@@ -172,7 +167,16 @@ let searchForm=reactive({
  * 数据查询按钮
  */
 function handleSerch(){
-  // console.log(searchForm);
+  tempArr=[];//条件查询临时数组（未分页数据）
+
+  tempArr=culturalRelicsStore.allData.filter((item)=>{
+    if((item.name.includes(searchForm.name)||!searchForm.name)&&(searchForm.years==item.years||!searchForm.years)&&(item.type.includes(searchForm.type)||!searchForm.type)){
+      return true;
+    }
+    return false;
+  })
+  showData.value=[];
+  Pagination(tempArr)
 }
 /**
  * 添加文物按钮回调
@@ -211,22 +215,16 @@ function closeAddCard(){
 function handleSizeChange(val:number){
   pageSize.value=val;
 
+
 }
 //当前页数发生变化事件
 function handleCurrentChange(val:number){
   currentPage.value=val;
+  if(!searchForm.name&&!searchForm.type&&!searchForm.years)
+    Pagination(culturalRelicsStore.allData);
+  else
+    Pagination(tempArr);
 }
-//类型数组
-let typeArr=reactive([
-  {
-    value: '青铜器',
-    lable: '青铜器',
-  },
-  {
-    value: '铁器',
-    label: '铁器',
-  }
-])
 
 //详情按钮
 function details(item:any){

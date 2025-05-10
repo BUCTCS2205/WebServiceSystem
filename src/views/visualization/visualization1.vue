@@ -19,15 +19,35 @@ let right_top=ref();
 let bottom_all=ref();
 let bar_optional={
       title: { text: '文物年份数量分布图',left: 'center' },
-      tooltip: {},
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
       xAxis: {
         name: '年份',
-        data: [0, 1000, 2000, 3000, 4000]
+        type: 'category',
+        data: [0, 1000, 2000, 3000, 4000],
+        axisTick: {
+          alignWithLabel: true
+        }
       },
       yAxis: {
         name: '藏品数量',
+        type: 'value'
       },
-      series: [{ name: '藏品数量', type: 'bar', data: [5, 20, 36, 10, 10] }]
+      series: [{ name: '藏品数量',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10],
+                barWidth: '40%',
+                }]
 }
 let pie_option = {
       title: {
@@ -71,12 +91,24 @@ let line_option = {
     left: 'center',
   },
   tooltip: {
-
+    trigger: 'axis'
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  toolbox: {
+    feature: {
+      saveAsImage: {}
+    }
   },
   xAxis: {
     name: '最近天数',
     type: 'category',
-    data: ['一', '二', '三','四','五','六','七'],
+    boundaryGap: false,
+    data: ['七', '六', '五','四','三','二','一'],
   },
   yAxis: {
     type: 'value',
