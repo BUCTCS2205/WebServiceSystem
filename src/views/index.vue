@@ -57,7 +57,7 @@ function gotoDetails(item:any){
         <FaDropdown
           :items="[
             [
-              { label: 'Github', icon: 'i-simple-icons:github', handle: () => open('https://github.com/fantastic-admin/basic') },
+              { label: 'Github', icon: 'i-simple-icons:github', handle: () => open('https://github.com/BUCTCS2205') },
               { label: 'Gitee', icon: 'i-simple-icons:gitee', handle: () => open('https://gitee.com/fantastic-admin/basic') },
             ],
           ]"
