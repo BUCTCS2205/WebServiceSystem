@@ -8,10 +8,15 @@ meta:
 import useCulturalRelicsStore from '@/store/modules/culturalRelics';
 import router from '@/router';
 const culturalRelicsStore=useCulturalRelicsStore();
-let recommmds=ref<any>([]);
-for(let i=0;i<3;i++){
-  recommmds.value.push(culturalRelicsStore.allData[i]);
-}
+
+let recommmds=computed({
+  get: function(){
+    return culturalRelicsStore.allData.slice(0,3);
+  },
+  set: function(){
+
+  }
+})
 const versionType = ref('basic')
 watch(versionType, (val) => {
   if (val === 'pro') {

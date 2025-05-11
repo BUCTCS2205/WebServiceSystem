@@ -2,8 +2,8 @@
   <div>
     <FaPageMain>
       <div class="images">
-        <div v-for="item in demo" :key="item" class="block">
-          <el-image style="width: 100px; height: 100px;" :src="item" fit="fill" :preview-src-list="demo" lazy/>
+        <div v-for="item in images" :key="item" class="block">
+          <el-image style="width: 100px; height: 100px;" :src="item" fit="fill" :preview-src-list="images" lazy/>
         </div>
       </div>
     </FaPageMain>
@@ -12,13 +12,22 @@
 <script lang="ts" setup>
 import useCulturalRelicsStore from '@/store/modules/culturalRelics';
 const culturalRelicsStore=useCulturalRelicsStore();
-let demo=ref<any>([]);
-onMounted(()=>{
-    culturalRelicsStore.allData.forEach((item)=>{
-    demo.value.push(item.url);
-  })
-})
+// let demo=ref<any>([]);
+// onMounted(()=>{
+//     culturalRelicsStore.allData.forEach((item)=>{
+//     demo.value.push(item.url);
+//   })
+// })
+let images=computed({
+  get: function(){
+    return culturalRelicsStore.allData.map((item)=>{
+      return item.url;
+    })
+  },
+  set: function(){
 
+  }
+})
 </script>
 <style scoped>
 .images {
