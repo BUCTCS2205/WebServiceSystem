@@ -12,10 +12,10 @@
       <!-- 左侧信息列 -->
       <el-col :xs="24" :sm="12">
         <el-form-item label="名称" class="form-item__label-bold">
-          <div class="form-value">{{ route.query.name }}</div>
+          <div class="form-value">{{ route.query.title }}</div>
         </el-form-item>
         <el-form-item label="类型">
-          <el-tag effect="dark" type="info">{{ route.query.type }}</el-tag>
+          <el-tag effect="dark" type="info">{{ route.query.material }}</el-tag>
         </el-form-item>
       </el-col>
 
@@ -37,7 +37,7 @@
     <!-- 描述区块 -->
     <el-form-item label="详细描述">
       <div class="description-box">
-        {{ route.query.describe || '-' }}
+        {{ route.query.description || '-' }}
       </div>
     </el-form-item>
   </el-form>

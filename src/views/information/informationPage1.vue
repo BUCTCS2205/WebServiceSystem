@@ -6,24 +6,24 @@
     <div class="func">
       <FaButton class="btn1" @click="add">添加文物</FaButton>
       <div class="search">
-        <el-input class="myInput" v-model="searchForm.name" placeholder="请输入标题" />
-        <el-input class="myInput" v-model="searchForm.years" placeholder="请输入年份" />
-        <el-input class="myInput" v-model="searchForm.type" placeholder="请输入材质" />
+        <el-input class="myInput" v-model="searchForm.title" placeholder="请输入标题" />
+        <el-input class="myInput" v-model="searchForm.age" placeholder="请输入年份" />
+        <el-input class="myInput" v-model="searchForm.material" placeholder="请输入材质" />
         <FaButton class="btn2" @click="handleSerch">条件查询</FaButton>
       </div>
     </div>
     <!-- 内容表格区 -->
     <el-table :data="showData" border style="width: 100%; margin-bottom: 30px">
-      <el-table-column prop="name" label="名称" width="100" />
-      <el-table-column prop="years" label="年份" width="100"></el-table-column>
-      <el-table-column prop="image" label="图片" width="150" >
+      <el-table-column prop="title" label="名称" width="100" />
+      <el-table-column prop="age" label="年份" width="100"></el-table-column>
+      <el-table-column label="图片" width="150" >
         <template #default="scope">
           <el-image :src="scope.row.url" style="width: 100px;
           height: 100px;"></el-image>
         </template>
       </el-table-column>
-      <el-table-column prop="type" label="类型"  width="150"/>
-      <el-table-column prop="describe" label="描述" class="describe"></el-table-column>
+      <el-table-column prop="material" label="类型"  width="150"/>
+      <el-table-column prop="description" label="描述" class="describe"></el-table-column>
       <el-table-column label="操作" width="250" class="handle">
         <template #default="scope">
           <el-button size="small" type="success" @click="details(scope.row)">详情</el-button>
@@ -130,13 +130,17 @@ import useCulturalRelicsStore from '@/store/modules/culturalRelics';
 const culturalRelicsStore=useCulturalRelicsStore();//从文物仓库中取出全部数据
 let tempArr:any[]=[]//条件查询临时数据
 let showData=ref<any>([]);//正真展示的数据
+
 //总数据量
 let total=ref(culturalRelicsStore.allData.length);
 let currentPage=ref(1);//当前页数
 let pageSize=ref(3);//表格大小
-onMounted(()=>{
-  Pagination(culturalRelicsStore.allData);
-})
+Pagination(culturalRelicsStore.allData);
+// onMounted(()=>{
+//   Pagination(culturalRelicsStore.allData);
+//   // console.log('初始化',culturalRelicsStore.allData);
+//   // console.log('showData',showData.value);
+// })
 /**
  * 将数据分页
  */
@@ -158,9 +162,9 @@ let addItem=reactive({
 })
 //查询数据
 let searchForm=reactive({
-    name: '',
-    years: '',
-    type: '',
+    title: '',
+    age: '',
+    material: '',
 })
 
 /**
@@ -168,9 +172,10 @@ let searchForm=reactive({
  */
 function handleSerch(){
   tempArr=[];//条件查询临时数组（未分页数据）
+  // console.log(culturalRelicsStore.allData);
 
   tempArr=culturalRelicsStore.allData.filter((item)=>{
-    if((item.name.includes(searchForm.name)||!searchForm.name)&&(searchForm.years==item.years||!searchForm.years)&&(item.type.includes(searchForm.type)||!searchForm.type)){
+    if((item.title.includes(searchForm.title)||!searchForm.title)&&(searchForm.age.includes(searchForm.age)||!searchForm.age)&&(item.material.includes(searchForm.material)||!searchForm.material)){
       return true;
     }
     return false;
@@ -220,7 +225,7 @@ function handleSizeChange(val:number){
 //当前页数发生变化事件
 function handleCurrentChange(val:number){
   currentPage.value=val;
-  if(!searchForm.name&&!searchForm.type&&!searchForm.years)
+  if(!searchForm.title&&!searchForm.material&&!searchForm.age)
     Pagination(culturalRelicsStore.allData);
   else
     Pagination(tempArr);

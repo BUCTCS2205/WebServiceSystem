@@ -17,6 +17,13 @@ import * as echarts from 'echarts';
 let left_top=ref();
 let right_top=ref();
 let bottom_all=ref();
+let testNum=ref([
+            { value: 1048, name: '金器' },
+            { value: 735, name: '银器' },
+            { value: 580, name: '铜器' },
+            { value: 484, name: '铁器' },
+            { value: 300, name: '石器' }
+          ]);
 let bar_optional={
       title: { text: '文物年份数量分布图',left: 'center' },
       tooltip: {
@@ -68,13 +75,14 @@ let pie_option = {
           name: '类型',
           type: 'pie',
           radius: '50%',
-          data: [
-            { value: 1048, name: '金器' },
-            { value: 735, name: '银器' },
-            { value: 580, name: '铜器' },
-            { value: 484, name: '铁器' },
-            { value: 300, name: '石器' }
-          ],
+          // data: [
+          //   { value: 1048, name: '金器' },
+          //   { value: 735, name: '银器' },
+          //   { value: 580, name: '铜器' },
+          //   { value: 484, name: '铁器' },
+          //   { value: 300, name: '石器' }
+          // ],
+          data: testNum.value,
           emphasis: {
             itemStyle: {
               shadowBlur: 10,

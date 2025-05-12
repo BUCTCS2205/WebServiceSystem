@@ -20,7 +20,6 @@ const emits = defineEmits<{
 }>()
 
 const userStore = useUserStore()
-
 const title = import.meta.env.VITE_APP_TITLE
 const loading = ref(false)
 
@@ -41,18 +40,22 @@ const form = useForm({
 })
 const onSubmit = form.handleSubmit((values) => {
   // console.log("点击登录");
+
   loading.value = true
   userStore.login(values).then(() => {
     if (values.remember) {
       localStorage.setItem('login_account', values.account)
     }
     else {
-      localStorage.removeItem('login_account')
+      console.log('登录出现问题');
+      // localStorage.removeItem('login_account')
     }
     emits('onLogin', values.account)
   }).finally(() => {
     loading.value = false
   })
+  // console.log('~~~~~~~~~~~~~~~~~~');
+  // culturalRelicsStore.getAllData();
 })
 
 function testAccount(account: string) {

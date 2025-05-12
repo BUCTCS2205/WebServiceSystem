@@ -7,9 +7,12 @@ meta:
 <script setup lang="ts">
 import useCulturalRelicsStore from '@/store/modules/culturalRelics';
 import router from '@/router';
+// onMounted(async ()=>{
+//   const res=await apiCulturalRelics.culturalRelicsData();
+//   console.log(res);
+// })
 const culturalRelicsStore=useCulturalRelicsStore();
-
-let recommmds=computed({
+let recommds=computed({
   get: function(){
     return culturalRelicsStore.allData.slice(0,3);
   },
@@ -17,6 +20,10 @@ let recommmds=computed({
 
   }
 })
+// onMounted(()=>{
+//   console.log('recommds',recommds.value);
+// })
+
 const versionType = ref('basic')
 watch(versionType, (val) => {
   if (val === 'pro') {
@@ -29,6 +36,7 @@ function open(url: string) {
 //点击图片跳转详情页
 function gotoDetails(item:any){
   // console.log('跳转')
+  // console.log(item);
   router.push({
     path: '/Details',
     query: {...item}
@@ -77,7 +85,7 @@ function gotoDetails(item:any){
     </FaPageHeader>
     <FaPageMain>
       <el-carousel :interval="2000" arrow="hover" height="450px">
-        <el-carousel-item v-for="item in recommmds" :key="item.id" style="height: 500px;">
+        <el-carousel-item v-for="item in recommds" :key="item.id" style="height: 500px;">
             <img :src="item.url" style="width: 100%; height: 100%;" @click="gotoDetails(item)">
         </el-carousel-item>
       </el-carousel>

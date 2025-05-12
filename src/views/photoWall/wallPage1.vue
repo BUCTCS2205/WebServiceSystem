@@ -2,8 +2,8 @@
   <div>
     <FaPageMain>
       <div class="images">
-        <div v-for="item in images" :key="item" class="block">
-          <el-image style="width: 100px; height: 100px;" :src="item" fit="fill" :preview-src-list="images" lazy/>
+        <div v-for="(item,index) in images" :key="item" class="block">
+          <el-image style="width: 100px; height: 100px;" :src="item" fit="fill" :preview-src-list="images" :initial-index="index" lazy/>
         </div>
       </div>
     </FaPageMain>

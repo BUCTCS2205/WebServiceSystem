@@ -4,18 +4,20 @@ import useMenuStore from './menu'
 import useRouteStore from './route'
 import useSettingsStore from './settings'
 import useTabbarStore from './tabbar'
-
+import useCulturalRelicsStore from './culturalRelics'
 const useUserStore = defineStore(
   // 唯一ID
   'user',
   () => {
+    const culturalRelicsStore=useCulturalRelicsStore();
     const settingsStore = useSettingsStore()
     const routeStore = useRouteStore()
     const menuStore = useMenuStore()
     const tabbarStore = useTabbarStore()
     const password=ref(localStorage.password ?? '');
     const account = ref(localStorage.account ?? '')
-    const token = ref(localStorage.token ?? '')
+    // const token = ref(localStorage.token ?? '')
+    const token=ref('');
     const avatar = ref(localStorage.avatar ?? '')
     const permissions = ref<string[]>([])
     const isLogin = computed(() => {
@@ -32,16 +34,20 @@ const useUserStore = defineStore(
     }) {
       // console.log('点击登录');
       const res = await apiUser.login(data)
-      // const res=await apiUser.demo();
+
       // console.log('res',res);
       password.value=data.password;
       localStorage.setItem('account', res.data.account)
+      // localStorage.setItem('account',data.account);
       localStorage.setItem('token', res.data.token)
+      // localStorage.setItem('token',nanoid())
       localStorage.setItem('avatar', res.data.avatar)
+      // localStorage.setItem('avatar','https://fantastic-admin.hurui.me/logo.svg');
       localStorage.setItem('password',data.password);
       account.value = res.data.account
       token.value = res.data.token
       avatar.value = res.data.avatar
+      culturalRelicsStore.getAllData();
     }
 
     // 手动登出

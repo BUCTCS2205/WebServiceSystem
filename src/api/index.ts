@@ -38,17 +38,17 @@ api.interceptors.response.use(
      * 规则是当 status 为 1 时表示请求成功，为 0 时表示接口需要登录或者登录状态失效，需要重新登录
      * 请求出错时 error 会返回错误信息
      */
-    if (response.data.status === 1) {
-      if (response.data.error !== '') {
-        toast.warning('Warning', {
-          description: response.data.error,
-        })
-        return Promise.reject(response.data)
-      }
-    }
-    else {
-      useUserStore().requestLogout()
-    }
+    // if (response.data.status === 1) {
+    //   if (response.data.error !== '') {
+    //     toast.warning('Warning', {
+    //       description: response.data.error,
+    //     })
+    //     return Promise.reject(response.data)
+    //   }
+    // }
+    // else {
+    //   useUserStore().requestLogout()
+    // }
     return Promise.resolve(response.data)
   },
   (error) => {
