@@ -5,6 +5,7 @@ import useRouteStore from './route'
 import useSettingsStore from './settings'
 import useTabbarStore from './tabbar'
 import useCulturalRelicsStore from './culturalRelics'
+import { ElMessage } from 'element-plus'
 const useUserStore = defineStore(
   // 唯一ID
   'user',
@@ -33,20 +34,28 @@ const useUserStore = defineStore(
       password: string
     }) {
       // console.log('点击登录');
-      const res = await apiUser.login(data)
-
+      const res:any = await apiUser.login(data)
       // console.log('res',res);
+      if(res.code==500){
+        console.log('500');
+        ElMessage({
+          type: 'error',
+          message: res.message,
+        })
+        return ;
+      }
       password.value=data.password;
-      localStorage.setItem('account', res.data.account)
+      localStorage.setItem('account', res.data.account);
       // localStorage.setItem('account',data.account);
-      localStorage.setItem('token', res.data.token)
+      localStorage.setItem('token', 'token')
       // localStorage.setItem('token',nanoid())
-      localStorage.setItem('avatar', res.data.avatar)
+      localStorage.setItem('avatar', 'https://fantastic-admin.hurui.me/logo.svg')
       // localStorage.setItem('avatar','https://fantastic-admin.hurui.me/logo.svg');
       localStorage.setItem('password',data.password);
+
       account.value = res.data.account
-      token.value = res.data.token
-      avatar.value = res.data.avatar
+      token.value = 'token'
+      avatar.value = 'https://fantastic-admin.hurui.me/logo.svg'
       culturalRelicsStore.getAllData();
     }
 

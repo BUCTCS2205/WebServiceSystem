@@ -14,7 +14,7 @@
     </div>
     <!-- 内容表格区 -->
     <el-table :data="showData" border style="width: 100%; margin-bottom: 30px">
-      <el-table-column prop="title" label="名称" width="100" />
+      <el-table-column prop="title" label="标题" width="100" />
       <el-table-column prop="age" label="年份" width="100"></el-table-column>
       <el-table-column label="图片" width="150" >
         <template #default="scope">
@@ -22,7 +22,7 @@
           height: 100px;"></el-image>
         </template>
       </el-table-column>
-      <el-table-column prop="material" label="类型"  width="150"/>
+      <el-table-column prop="material" label="材质"  width="150"/>
       <el-table-column prop="description" label="描述" class="describe"></el-table-column>
       <el-table-column label="操作" width="250" class="handle">
         <template #default="scope">
@@ -175,7 +175,7 @@ function handleSerch(){
   // console.log(culturalRelicsStore.allData);
 
   tempArr=culturalRelicsStore.allData.filter((item)=>{
-    if((item.title.includes(searchForm.title)||!searchForm.title)&&(searchForm.age.includes(searchForm.age)||!searchForm.age)&&(item.material.includes(searchForm.material)||!searchForm.material)){
+    if((item.title.includes(searchForm.title)||!searchForm.title)&&(item.age.includes(searchForm.age)||!searchForm.age)&&(item.material.includes(searchForm.material)||!searchForm.material)){
       return true;
     }
     return false;
