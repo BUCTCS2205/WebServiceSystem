@@ -3,8 +3,9 @@ import { FormControl, FormField, FormItem, FormMessage } from '@/ui/shadcn/ui/fo
 import { toTypedSchema } from '@vee-validate/zod'
 import { ElMessage } from 'element-plus';
 import { useForm } from 'vee-validate'
+import useUserStore from '@/store/modules/user';
 import * as z from 'zod'
-
+const userStore=useUserStore();
 defineOptions({
   name: 'RegisterForm',
 })
@@ -21,9 +22,10 @@ const emits = defineEmits<{
 
 const loading = ref(false)
 
-let myForm=reactive({
+let myForm=ref({
   username: '',
-  password: ''
+  password: '',
+  checkPassword: '',
 })
 const form = useForm({
   validationSchema: toTypedSchema(
@@ -49,13 +51,21 @@ const onSubmit = form.handleSubmit((values) => {
   loading.value = true
   emits('onRegister', values.account)
 })
+/**
+ * 注册按钮
+ */
 function register(){
-  console.log('点击注册');
-  // console.log('username'+myForm.username);
-  // console.log('password'+myForm.password);
+  if(myForm.value.checkPassword!==myForm.value.password){
+    return;
+  }
+  let registerData={
+    account: myForm.value.username,
+    password: myForm.value.password
+  }
+  userStore.register(registerData);
   let count=3;
 
-  let elmessage=ElMessage({
+  ElMessage({
     type: 'success',
     message: `注册成功，请前往登录,${count}秒后自动跳转`,
     duration: 3000,
@@ -74,7 +84,7 @@ function register(){
     }
 },1000)
   let timer2=setTimeout(()=>{
-    emits('onRegister',myForm.username);
+    emits('onRegister',myForm.value.username);
     clearTimeout(timer2);
   },3000)
 
@@ -92,10 +102,10 @@ function register(){
           演示系统注册功能
         </p>
       </div>
-      <FormField v-slot="{ componentField, errors }" name="account">
+      <FormField v-slot="{  errors }" name="account">
         <FormItem class="relative pb-6 space-y-0">
           <FormControl>
-            <FaInput v-model="myForm.username" type="text" placeholder="请输入用户名" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            <FaInput v-model="myForm.username" type="text" placeholder="请输入用户名" class="w-full" :class="errors.length && 'border-destructive'"  />
           </FormControl>
           <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
             <FormMessage class="absolute bottom-1 text-xs" />
@@ -118,7 +128,7 @@ function register(){
       <FormField v-slot="{ componentField, errors }" name="checkPassword">
         <FormItem class="relative pb-6 space-y-0">
           <FormControl>
-            <FaInput type="password" placeholder="请再次输入密码" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            <FaInput v-model="myForm.checkPassword" type="password" placeholder="请再次输入密码" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
           </FormControl>
           <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
             <FormMessage class="absolute bottom-1 text-xs" />

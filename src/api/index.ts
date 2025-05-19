@@ -21,11 +21,11 @@ api.interceptors.request.use(
       }
     }
     // 是否将 POST 请求参数进行字符串化处理
-    if (request.method === 'post') {
-      // request.data = qs.stringify(request.data, {
-      //   arrayFormat: 'brackets',
-      // })
-    }
+    // if (request.method === 'post') {
+    //   request.data = qs.stringify(request.data, {
+    //     arrayFormat: 'brackets',
+    //   })
+    // }
     return request
   },
 )

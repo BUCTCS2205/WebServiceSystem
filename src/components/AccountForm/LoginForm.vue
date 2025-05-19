@@ -40,15 +40,15 @@ const form = useForm({
 })
 const onSubmit = form.handleSubmit((values) => {
   // console.log("点击登录");
-
+  // console.log('values',values.remember);
   loading.value = true
   userStore.login(values).then(() => {
     if (values.remember) {
       localStorage.setItem('login_account', values.account)
     }
     else {
-      console.log('登录出现问题');
-      // localStorage.removeItem('login_account')
+      // console.log('登录出现问题');
+      localStorage.removeItem('login_account')
     }
     emits('onLogin', values.account)
   }).finally(() => {

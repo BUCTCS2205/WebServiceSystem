@@ -27,6 +27,14 @@ const useUserStore = defineStore(
       }
       return false
     })
+    /**
+     *
+     * 用户注册
+     */
+    async function register(data:any) {
+        // console.log('注册');
+        await apiUser.register(data)
+    }
 
     // 登录
     async function login(data: {
@@ -45,7 +53,7 @@ const useUserStore = defineStore(
         return ;
       }
       password.value=data.password;
-      localStorage.setItem('account', res.data.account);
+      localStorage.setItem('account', data.account);
       // localStorage.setItem('account',data.account);
       localStorage.setItem('token', 'token')
       // localStorage.setItem('token',nanoid())
@@ -53,7 +61,7 @@ const useUserStore = defineStore(
       // localStorage.setItem('avatar','https://fantastic-admin.hurui.me/logo.svg');
       localStorage.setItem('password',data.password);
 
-      account.value = res.data.account
+      account.value = data.account
       token.value = 'token'
       avatar.value = 'https://fantastic-admin.hurui.me/logo.svg'
       culturalRelicsStore.getAllData();
@@ -126,6 +134,7 @@ const useUserStore = defineStore(
       avatar,
       permissions,
       isLogin,
+      register,
       login,
       logout,
       requestLogout,

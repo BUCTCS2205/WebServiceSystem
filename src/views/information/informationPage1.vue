@@ -175,7 +175,7 @@ function handleSerch(){
   // console.log(culturalRelicsStore.allData);
 
   tempArr=culturalRelicsStore.allData.filter((item)=>{
-    if((item.title.includes(searchForm.title)||!searchForm.title)&&(item.age.includes(searchForm.age)||!searchForm.age)&&(item.material.includes(searchForm.material)||!searchForm.material)){
+    if((item.title.toLocaleLowerCase().includes(searchForm.title)||!searchForm.title)&&(item.age.includes(searchForm.age)||!searchForm.age)&&(item.material.includes(searchForm.material)||!searchForm.material)){
       return true;
     }
     return false;

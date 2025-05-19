@@ -1,7 +1,13 @@
 import api from '../index'
 
 export default {
+  /**
+   *
+   * 注册
+   */
   //测试
+  register: (data:any)=>api.post('/user/register',data),
+
   demo: ()=>api.get('/user'),
   // 登录
   login: (data: {
