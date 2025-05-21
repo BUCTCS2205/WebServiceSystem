@@ -79,7 +79,7 @@ showItem.value={
   url: route.query.url as string,
   description: route.query.description as string,
 }
-console.log('showItem',showItem.value);
+
 //按类型过滤出推荐数组
 let recommdArr=computed(()=>{
   // console.log('测试推荐');
