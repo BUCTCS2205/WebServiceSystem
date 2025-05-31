@@ -96,7 +96,7 @@
       <el-form-item label="图片">
         <el-upload
           class="image-uploader"
-          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+          action="http://localhost:8080/upload"
           accept=".png,.jpg"
           :show-file-list="true"
           :on-success="handleAvatarSuccess"
@@ -136,11 +136,6 @@ let total=ref(culturalRelicsStore.allData.length);
 let currentPage=ref(1);//当前页数
 let pageSize=ref(3);//表格大小
 Pagination(culturalRelicsStore.allData);
-// onMounted(()=>{
-//   Pagination(culturalRelicsStore.allData);
-//   // console.log('初始化',culturalRelicsStore.allData);
-//   // console.log('showData',showData.value);
-// })
 /**
  * 将数据分页
  */
@@ -268,14 +263,14 @@ const imageUrl = ref('')
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
   uploadFile
 ) => {
-  console.log("上传成功");
-  console.log(uploadFile);
-  imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+  // console.log("上传成功");
+  // console.log(uploadFile);
+  imageUrl.value = uploadFile.data;
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  console.log('点击按钮后上传成功前');
-  console.log(rawFile);
+  // console.log('点击按钮后上传成功前');
+  // console.log(rawFile);
   if (rawFile.size / 1024 / 1024 > 2) {
     ElMessage.error('文件过大');
     return false
