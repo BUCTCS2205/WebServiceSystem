@@ -6,8 +6,8 @@
       <el-table-column prop="id" label="序号" width="50" />
       <el-table-column prop="type" label="类型"/>
       <el-table-column  label="操作" width="300" >
-        <template #default="scorp">
-          <el-button type="danger" @click="deleteType(scorp.row.id)">删除</el-button>
+        <template #default="scope">
+          <el-button type="danger" @click="deleteType(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -46,7 +46,7 @@ function cancel(){
   showChange.value=false;
 }
 function deleteType(id:any){
-  // console.log(id);
+  console.log(id);
   ElMessage({
     type: 'success',
     message: '删除成功',

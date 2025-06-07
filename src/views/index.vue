@@ -7,6 +7,8 @@ meta:
 <script setup lang="ts">
 import useCulturalRelicsStore from '@/store/modules/culturalRelics';
 import router from '@/router';
+
+
 // onMounted(async ()=>{
 //   const res=await apiCulturalRelics.culturalRelicsData();
 //   console.log(res);
@@ -55,7 +57,8 @@ function gotoDetails(item:any){
       <template #description>
         <div class="text-sm/6">
           <h3>
-            热门推荐
+            <span>热门推荐</span>
+            <a href="http://39.105.26.212:9090/?user_id=1" style="color: gray;margin-left: 2vw;">前往知识问答子系统</a>
           </h3>
           <!-- <div>
             注：在作者就职过的公司，本框架已在电商、直播、OA、ERP等多个不同领域的中后台系统中应用并稳定运行

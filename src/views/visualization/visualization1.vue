@@ -1,5 +1,12 @@
 <template>
   <div>
+    <FaPageHeader>
+      <template #description>
+        <div class="text-sm/6">
+        <a href="http://39.105.26.212:7474/browser/">点击前往知识图谱</a>
+      </div>
+      </template>
+    </FaPageHeader>
     <FaPageMain>
       <div class="top">
         <div class="left_top" ref="left_top"></div>

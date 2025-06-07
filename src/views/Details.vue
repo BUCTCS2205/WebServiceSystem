@@ -41,8 +41,33 @@
       </div>
     </el-form-item>
   </el-form>
+  <!-- 评论区 -->
+  <div class="comment">
+    <el-text class="commentText" size="large" tag="div">评论区</el-text>
+    <!-- 发送评论，固定定位在视口底部 -->
+    <el-row :gutter="20" class="commentSubmit">
+      <el-col :span="12" :offset="3">
+        <el-input v-model="comment" maxlength="200" placeholder="在此输入评论" show-word-limit type="textarea"/>
+      </el-col>
+      <el-col :span="4">
+        <el-button type="primary" style="position: relative; bottom: 0;" @click="submit">发布</el-button>
+      </el-col>
+    </el-row>
+    <!-- 展示全部评论 -->
+    <div class="main" v-for="item in commentArr" :key="item.id">
+        <!--第一行 展示头像昵称 -->
+        <el-row :gutter="50">
+            <el-avatar :size="30" :src="item.avater" style="margin-right: 1vw; margin-left: 2vw;" />
+            <el-text>{{ item.username }}</el-text>
+        </el-row>
+        <!-- 第二行展示评论具体内容 -->
+        <el-row>
+            <p style="margin-left: 3vw; margin-top: 2vh;">{{ item.text }}</p>
+        </el-row>
+        <hr>
+    </div>
+  </div>
   <!-- 相似推荐 -->
-  <hr>
   <div class="recommd">
     <el-card class="demo-image">
       <template #header>
@@ -62,6 +87,45 @@
 import router from '@/router';
 import { useRoute } from 'vue-router';
 import useCulturalRelicsStore from '@/store/modules/culturalRelics';
+import {nanoid} from 'nanoid'
+/**
+ * 发布评论
+ */
+function submit(){
+  let commentObj={
+    id:nanoid(),
+    avater: "https://fantastic-admin.hurui.me/logo.svg",
+    username: "admin",
+    text: comment.value,
+  }
+  commentArr.value.unshift(commentObj);
+  comment.value="";
+}
+//收集评论
+let comment=ref('');
+
+//评论数组
+let commentArr =ref([
+  {
+    id:"1",
+    avater: "https://fantastic-admin.hurui.me/logo.svg",
+    username: "admin",
+    text: '第一条评论测试',
+  },
+  {
+    id:"2",
+    avater: "https://fantastic-admin.hurui.me/logo.svg",
+    username: "admin",
+    text: '第二条评论测试',
+  },
+  {
+    id:"3",
+    avater: "https://fantastic-admin.hurui.me/logo.svg",
+    username: "admin",
+    text: '第三条评论测试',
+  }
+])
+
 const culturalRelicsStore=useCulturalRelicsStore()//获取全部数据
 //获取路由参数
 let route=useRoute();
@@ -175,6 +239,20 @@ function goDetail(item:any){
 /* 推荐区块 */
 .recommd{
   margin-top: 30px;
+}
+/* 评论区块 */
+.comment{
+  .commentSubmit{
+    width: 100%;
+    position: fixed;
+    bottom: 5vh;
+    z-index: 999;
+  }
+  .commentText{
+    text-align: center;
+    width: 100%;
+    font-weight: 700
+  }
 }
 
 /* 响应式优化 */

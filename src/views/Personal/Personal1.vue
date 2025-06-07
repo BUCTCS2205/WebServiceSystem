@@ -42,13 +42,42 @@
           </el-form-item>
         </el-form>
       </el-card>
-
+      <!-- 近期浏览 -->
+      <div class="recently" style="margin-top: 3vh;">
+        <el-text tag="div" style="font-weight: 700; font-size: 20px; margin-bottom: 3vh;">浏览历史</el-text>
+        <div class="main">
+          <div class="item" v-for="recently in recentlyArr" :key="recently.id" @click="goDetail(recently)">
+              <img :src="recently.url" class="img">
+              <p class="description">{{ recently.description }}</p>
+          </div>
+        </div>
+      </div>
   </FaPageMain>
 </div>
 </template>
 <script lang="ts" setup name="Personal1">
 import useUserStore from '@/store/modules/user';
 import { ElMessage, type FormInstance,type FormRules } from 'element-plus'
+import useCulturalRelicsStore from '@/store/modules/culturalRelics';
+import { useRouter } from 'vue-router';
+const router=useRouter();
+const culturalRelicsStore=useCulturalRelicsStore();
+
+/**
+ * 跳转详情
+ */
+function goDetail(recently:any){
+  router.push({
+    path:'/Details',
+    query:{...recently}
+  })
+}
+
+//近期浏览
+let recentlyArr =computed(()=>{
+  return culturalRelicsStore.allData.slice(0,3);
+})
+// console.log('近期浏览',recentlyArr.value);
 let input_newpassword=ref();
 let input_nextpassword=ref();
 function handleNewPassword($event:any){
@@ -107,7 +136,7 @@ function cancel(){
   passwordFrom.newPassword="";
   passwordFrom.nextPassword="";
 }
-const validatePass = (rule: any, value: any, callback: any) => {
+const validatePass = (rules:any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('输入不能为空'));
   }
@@ -115,7 +144,7 @@ const validatePass = (rule: any, value: any, callback: any) => {
     callback();
   }
 }
-const validatePass2 = (rule: any, value: any, callback: any) => {
+const validatePass2 = (rules: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('输入不能为空'))
   } else if (value !== passwordFrom.newPassword) {
@@ -130,6 +159,15 @@ const rules:any=reactive<FormRules<typeof passwordFrom>>({
 })
 </script>
 <style scoped>
+.recently{
+  .main{
+    .item{
+      display: flex;
+      justify-content: space-around;
+      border-bottom: 2px solid black;
+    }
+  }
+}
   .avatar {
     display: flex;
     height: 50px;
@@ -141,7 +179,6 @@ const rules:any=reactive<FormRules<typeof passwordFrom>>({
       line-height: 50px;
     }
   }
-
   .username {
     display: flex;
     margin-bottom: 30px;

@@ -130,7 +130,7 @@ import useCulturalRelicsStore from '@/store/modules/culturalRelics';
 const culturalRelicsStore=useCulturalRelicsStore();//从文物仓库中取出全部数据
 let tempArr:any[]=[]//条件查询临时数据
 let showData=ref<any>([]);//正真展示的数据
-
+console.log(culturalRelicsStore.allData);
 //总数据量
 let total=ref(culturalRelicsStore.allData.length);
 let currentPage=ref(1);//当前页数
@@ -214,7 +214,10 @@ function closeAddCard(){
 //表格项数发生变化事件
 function handleSizeChange(val:number){
   pageSize.value=val;
-
+  if(!searchForm.title&&!searchForm.material&&!searchForm.age)
+    Pagination(culturalRelicsStore.allData);
+  else
+    Pagination(tempArr);
 
 }
 //当前页数发生变化事件
